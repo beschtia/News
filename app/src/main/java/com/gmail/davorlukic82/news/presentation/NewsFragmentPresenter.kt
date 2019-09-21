@@ -5,12 +5,12 @@ import com.gmail.davorlukic82.news.ui.fragments.NewsFragmentContract
 import kotlin.collections.ArrayList
 
 class NewsFragmentPresenter(private val view: NewsFragmentContract.View,
-                            private val getNewsIntractor: NewsFragmentContract.GetNewsIntractor)
-    : NewsFragmentContract.Presenter, NewsFragmentContract.GetNewsIntractor.OnFinishedListener {
+                            private val newsFragmentModel: NewsFragmentContract.NewsFragmentModel)
+    : NewsFragmentContract.Presenter, NewsFragmentContract.NewsFragmentModel.OnFinishedListener {
 
     override fun loadNews() {
         view.showProgress()
-        getNewsIntractor.getNews(this)
+        newsFragmentModel.getNews(this)
     }
 
     override fun onFinished(news: ArrayList<Article>) {

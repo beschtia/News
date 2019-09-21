@@ -1,8 +1,8 @@
 package com.gmail.davorlukic82.news.model
 
 import com.gmail.davorlukic82.news.model.response.ArticlesResponse
-import com.gmail.davorlukic82.news.networking.BackendFactory
-import com.gmail.davorlukic82.news.persistance.ArticlesRepository
+import com.gmail.davorlukic82.news.networking.interactors.ArticleInteractor
+import com.gmail.davorlukic82.news.persistance.ArticlesRepositoryContract
 import com.gmail.davorlukic82.news.ui.fragments.NewsFragmentContract
 import retrofit2.Call
 import retrofit2.Callback
@@ -11,14 +11,14 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.collections.ArrayList
 
-class GetNewsIntractorImpl : NewsFragmentContract.GetNewsIntractor {
+class NewsFragmentModel(private val repository: ArticlesRepositoryContract,
+                        private val interactor: ArticleInteractor)
+    : NewsFragmentContract.NewsFragmentModel {
 
-    private val repository = ArticlesRepository()
-    val interactor by lazy { BackendFactory.getArticleInteractor() }
     private lateinit var news: ArrayList<Article>
-    private lateinit var onFinishedListener: NewsFragmentContract.GetNewsIntractor.OnFinishedListener
+    private lateinit var onFinishedListener: NewsFragmentContract.NewsFragmentModel.OnFinishedListener
 
-    override fun getNews(onFinishedListener: NewsFragmentContract.GetNewsIntractor.OnFinishedListener) {
+    override fun getNews(onFinishedListener: NewsFragmentContract.NewsFragmentModel.OnFinishedListener) {
         this.onFinishedListener = onFinishedListener
         news = repository.getAllArticles() as ArrayList
         checkList(news)
@@ -31,7 +31,7 @@ class GetNewsIntractorImpl : NewsFragmentContract.GetNewsIntractor {
             val diff = timeNow - dbData[0].receivedTime!!
             diffInMinutes = TimeUnit.MILLISECONDS.toMinutes(diff)
         }
-        if (dbData.isEmpty() || diffInMinutes >= 2) {
+        if (dbData.isEmpty() || diffInMinutes >= 5) {
             interactor.getArticles(getArticleCallback())
         } else {
             onFinishedListener.onFinished(news)

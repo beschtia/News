@@ -6,11 +6,11 @@ interface ArticlesDetailsActivityContract {
 
     interface View{
 
-        fun setDataToViewPager(news: ArrayList<Article>)
+        fun setDataToViewPager(articles: ArrayList<Article>)
 
-        fun setActionBar(title: String)
+        fun setActionBar(title: String?)
 
-        fun onRequestTitle(title: String)
+        fun onRequestTitle(title: String?)
 
     }
 
@@ -23,5 +23,10 @@ interface ArticlesDetailsActivityContract {
         fun requestTitle(position: Int)
     }
 
+    interface ArticlesDetailsActivityModel{
 
+        fun getArticles(): ArrayList<Article>
+
+        fun getTitle(position: Int): String?
+    }
 }

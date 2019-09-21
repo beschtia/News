@@ -8,11 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gmail.davorlukic82.news.R
 import com.gmail.davorlukic82.news.model.Article
-import com.gmail.davorlukic82.news.model.GetNewsIntractorImpl
+import com.gmail.davorlukic82.news.model.NewsFragmentModel
+import com.gmail.davorlukic82.news.networking.BackendFactory
+import com.gmail.davorlukic82.news.persistance.ArticlesRepository
 import com.gmail.davorlukic82.news.presentation.NewsFragmentPresenter
 import com.gmail.davorlukic82.news.ui.activities.ArticlesDetailsActivity
 import com.gmail.davorlukic82.news.ui.adapters.NewsAdapter
-
 import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.fragment_news.*
 
@@ -26,9 +27,8 @@ class NewsFragment : BaseFragment(),
             onItemSelected(it)
         }
     }
-
-    private lateinit var news: ArrayList<Article>
     private lateinit var progressDialog: AlertDialog
+    private lateinit var alertDialog: AlertDialog
     private lateinit var presenter: NewsFragmentContract.Presenter
 
     override fun getLayoutResourceId() = R.layout.fragment_news
@@ -44,7 +44,8 @@ class NewsFragment : BaseFragment(),
         initUi()
         presenter = NewsFragmentPresenter(
             this,
-            GetNewsIntractorImpl()
+            NewsFragmentModel(ArticlesRepository(),
+                BackendFactory.getArticleInteractor())
         )
         presenter.loadNews()
     }
@@ -53,6 +54,9 @@ class NewsFragment : BaseFragment(),
         tasksRecyclerView.layoutManager = LinearLayoutManager(context)
         tasksRecyclerView.adapter = adapter
         progressDialog = SpotsDialog(context)
+        alertDialog = AlertDialog.Builder(context).setTitle(getString(R.string.alert_title))
+            .setMessage(getString(R.string.alert_message))
+            .setPositiveButton(getString(R.string.alert_positiveButton), null).create()
     }
 
     override fun onNewsLoaded(news: ArrayList<Article>) {
@@ -68,10 +72,7 @@ class NewsFragment : BaseFragment(),
     }
 
     override fun onResponseFailure(throwable: Throwable) {
-        AlertDialog.Builder(context).setTitle(getString(R.string.alert_title))
-            .setMessage(getString(R.string.alert_message) + "\nError message: " + throwable.message)
-            .setPositiveButton(getString(R.string.alert_positiveButton), null)
-            .show()
+        alertDialog.show()
     }
 
     private fun onItemSelected(position: Int) {

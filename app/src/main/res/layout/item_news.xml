@@ -27,18 +27,9 @@
             app:layout_constraintLeft_toRightOf="@id/articleImage"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:textColor="@color/colorTitle"
             android:textSize="20sp"/>
-
-        <TextView
-            android:id="@+id/articleTime"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            app:layout_constraintLeft_toRightOf="@id/articleImage"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/articleTitle"
-            android:textSize="10sp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

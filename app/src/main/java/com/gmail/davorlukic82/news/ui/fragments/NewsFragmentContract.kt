@@ -9,9 +9,9 @@ interface NewsFragmentContract {
 
         fun onNewsLoaded(news: ArrayList<Article>)
 
-        fun showProgress();
+        fun showProgress()
 
-        fun hideProgress();
+        fun hideProgress()
 
         fun onResponseFailure(throwable: Throwable)
     }
@@ -21,7 +21,7 @@ interface NewsFragmentContract {
         fun loadNews()
     }
 
-    interface GetNewsIntractor {
+    interface NewsFragmentModel {
 
         interface OnFinishedListener {
             fun onFinished(news: ArrayList<Article>)

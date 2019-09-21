@@ -11,23 +11,6 @@ class ArticlesRepository: ArticlesRepositoryContract {
 
     private var articlesDao = db.articlesDao()
 
-    fun nesto(){
-        TODO("pogledaj")
-    }
-
-    /*override fun saveArticle(article: Article) {
-        val timeNow = Calendar.getInstance().timeInMillis
-        val modifiedArticle = Article(
-            title = article.title,
-            description = article.description,
-            url = article.url,
-            urlToImage = article.urlToImage,
-            publishedAt = article.publishedAt,
-            receivedTime = timeNow
-        )
-        articlesDao.addArticle(modifiedArticle)
-    }*/
-
     override fun saveArticle(article: Article) {
         article.receivedTime = Calendar.getInstance().timeInMillis
         articlesDao.addArticle(article)
